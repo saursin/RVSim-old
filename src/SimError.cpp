@@ -15,7 +15,7 @@ void SimError::throwError(std::string message, bool exit_flag)
     std::cerr << COLOR_RED <<"!ERROR: " << COLOR_RESET << message << std::endl;
     if(exit_flag)
     {
-        SimError::Exit(EXIT_FAILURE);
+        Exit(EXIT_FAILURE);
     }
 }
 
@@ -41,6 +41,6 @@ void SimError::throwSuccessMessage(std::string message, bool exit_flag)
     std::cout << COLOR_GREEN <<"SUCCESS : " << COLOR_RESET  << message <<std::endl;
     if(exit_flag)
     {
-        SimError::Exit(EXIT_SUCCESS);
+        Exit(EXIT_SUCCESS);
     }
 }

@@ -5,7 +5,7 @@
 namespace SimError
 {
     // Exit function
-    void Exit(int);
+    void Exit(int status);
 
     // ================== Color codes for output formatting ====================
     const std::string  COLOR_RESET  = "\033[0m";
