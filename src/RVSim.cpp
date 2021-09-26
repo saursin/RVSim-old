@@ -5,6 +5,7 @@
 #include "cxxopts.hpp"
 
 #include "SimInfo.h"
+#include "Util.h"
 #include "RVdefs.h"
 #include "SimError.h"
 #include "Bus.h"
@@ -189,11 +190,74 @@ int main(int argc, char ** argv)
     };
     
     cpu = new RVCPU(0x00000000, cpu_isa_definition, bus);
+	
+	// Run simulation
+	if(debug_mode)
+	{
+		std::string input;
+		while(true)
+		{
+			// Parse Input
+			std::cout << ": ";
+			getline(std::cin, input);
+			
+			// Tokenize
+			std::vector<std::string> token;
+			Util::tokenize(input, token, ' ');
 
-    for(int i=0; i<10; i++)
-    {
-        cpu->step();
-    }
+			// Parse Command
+			if((token[0] == "q") | (token[0] == "quit"))
+			{
+				// Quit simulator
+				std::cout << "Exiting due to user interuption\n";
+				SimError::Exit(EXIT_SUCCESS);
+			}
+			else if(token[0] == "r")
+			{
+				// Run indefinitely
+				cpu->run(-1);
+			}
+			else if(token[0] == "rst")
+			{
+				// Reset Simulator
+				cpu->reset();
+			}
+			else if(token[0] == "")
+			{
+				// Run for 1 cycles
+				cpu->run(1);
+			}
+			else if(token[0] == "for")
+			{
+				// run for specified cycles
+				if(token.size()<2)
+					SimError::throwError("\"for\" command expects one argument\n");
+				else
+					cpu->run(std::stoi(token[1]));
+			}
+			else if(token[0] == "verbose-on")
+			{
+				// turn on verbose
+				verbose_flag = true;
+			}
+			else if(token[0] == "verbose-off")
+			{
+				// turn on verbose
+				verbose_flag = false;
+			}
+			else
+			{
+				SimError::throwError("Unknown command \"" + token[0] + "\"\n");
+			}
+			input.clear();
+		}
+	}
+	else
+	{
+		cpu->run(-1);
+	}
 
-    SimError::Exit(EXIT_SUCCESS);
+	// Control must never Reach Here //
+	SimError::throwError("PROGRAM CONTROL FAULT", true);
+	return 0;
 }

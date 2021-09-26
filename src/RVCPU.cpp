@@ -54,9 +54,20 @@ void RVCPU::reset()
 }
 
 /**
- * @brief Step CPU by one cycle
+ * @brief Step CPU by a cycle
  */
 void RVCPU::step()
 {
     std::cout <<"step" <<"\n";
+}
+
+/**
+ * @brief Run CPU for given cycles
+ */
+void RVCPU::run(unsigned long int ticks)
+{
+    for(unsigned long int c = 0; c<ticks; c++)
+    {
+        step();
+    }
 }

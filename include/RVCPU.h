@@ -68,9 +68,14 @@ class RVCPU
     void reset();
 
     /**
-     * @brief Step CPU by one cycle
+     * @brief Step CPU by a cycles
      */
     void step();
+
+    /**
+     * @brief Run CPU for given cycles
+     */
+    void run(unsigned long int ticks = 1);
 };
 
 #endif // __RVCPU_H__
